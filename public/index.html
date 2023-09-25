@@ -25,6 +25,59 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Comforter+Brush&family=Heebo:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+      }
+      .comment-container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      }
+      h1 {
+          text-align: center;
+          color: #333;
+      }
+      .comment-form {
+          margin-top: 20px;
+      }
+      .comment-form label {
+          display: block;
+          margin-bottom: 10px;
+          color: #333;
+      }
+      .comment-form input[type="text"],
+      .comment-form textarea {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+      }
+      .comment-form textarea {
+          height: 100px;
+      }
+      .comment-form button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+      .comment-list {
+          margin-top: 20px;
+      }
+      .comment {
+          border: 1px solid #ccc;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+      }
+  </style>
 
 </head>
 
@@ -55,21 +108,21 @@
           </li>
 
           <li>
-            <a href="./html/about.html" class="navbar-link">About Us</a>
+            <a href="../public/html/about.html" class="navbar-link">About Us</a>
           </li>
 
 
 
           <li>
-            <a href="./html/Destinations.html" class="navbar-link">Destinations</a>
+            <a href="../public/html/Destinations.html" class="navbar-link">Destinations</a>
           </li>
 
           <li>
-            <a href="#" class="navbar-link">Blog</a>
+            <a href="../public/html/blog.html" class="navbar-link">Blog</a>
           </li>
 
           <li>
-            <a href="./html/contact.html" class="navbar-link">Contact Us</a>
+            <a href="../public/html/contact.html" class="navbar-link">Contact Us</a>
           </li>
 
         </ul>
@@ -374,7 +427,37 @@
         </div>
       </section>
 
+      <div class="comment-container">
+        <h1>Customer comments</h1>
+        <div class="comment-form">
+            <form action="#" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="comment">comment:</label>
+                <textarea id="comment" name="comment" required></textarea>
+
+                <button type="submit">Sent</button>
+            </form>
+        </div>
+        <div class="comment-list">
+            <!-- ส่วนนี้จะใช้ JavaScript เพื่อแสดงคอมเม้นที่ถูกส่งมา -->
+        </div>
+        <div class="comment">
+          
+          <div class="rating">
+              <span class="star">&#9733;</span>
+              <span class="star">&#9733;</span>
+              <span class="star">&#9733;</span>
+              <span class="star">&#9733;</span>
+              <span class="star">&#9734;</span>
+          </div>
+      </div>
+    </div>
+    <div class="comment-list" id="commentList"></div>
 
 
 
@@ -540,6 +623,77 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const commentForm = document.querySelector(".comment-form");
+        const commentList = document.querySelector("#commentList");
+
+        // เมื่อฟอร์มถูกส่ง
+        commentForm.addEventListener("submit", function (e) {
+            e.preventDefault(); // ป้องกันการรีเฟรชหน้าเว็บ
+
+            // ดึงข้อมูลจากฟอร์ม
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const commentText = document.getElementById("comment").value;
+
+            // สร้าง HTML element สำหรับคอมเม้นใหม่
+            const commentElement = document.createElement("div");
+            commentElement.className = "comment";
+            commentElement.innerHTML = `<p><strong>${name}</strong> (${email}):</p><p>${commentText}</p>`;
+
+            // เพิ่มคอมเม้นใหม่ลงในรายการคอมเม้น
+            commentList.appendChild(commentElement);
+
+            // ล้างฟอร์ม
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("comment").value = "";
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const commentForm = document.querySelector(".comment-form");
+        const commentList = document.querySelector("#commentList");
+
+        // เมื่อฟอร์มถูกส่ง
+        commentForm.addEventListener("submit", function (e) {
+            e.preventDefault(); // ป้องกันการรีเฟรชหน้าเว็บ
+
+            // ดึงข้อมูลจากฟอร์ม
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const commentText = document.getElementById("comment").value;
+            const rating = document.querySelector("input[name='rating']:checked").value;
+
+            // สร้าง HTML element สำหรับคอมเม้นใหม่
+            const commentElement = document.createElement("div");
+            commentElement.className = "comment";
+            commentElement.innerHTML = `
+                <p><strong>${name}</strong> (${email}):</p>
+                <p>${commentText}</p>
+                <div class="rating">
+                    ${generateStars(rating)}
+                </div>
+            `;
+
+            // เพิ่มคอมเม้นใหม่ลงในรายการคอมเม้น
+            commentList.appendChild(commentElement);
+
+            // ล้างฟอร์ม
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("comment").value = "";
+        });
+
+        // ฟังก์ชันสร้างดาวตามคะแนน
+        function generateStars(rating) {
+            const filledStars = "&#9733;".repeat(rating);
+            const emptyStars = "&#9734;".repeat(5 - rating);
+            return filledStars + emptyStars;
+        }
+    });
+</script>
+
 
 </body>
 
